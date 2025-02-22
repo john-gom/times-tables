@@ -1,0 +1,281 @@
+<!-- saved from url=(0014)about:internet -->
+<html>
+<head>
+    <title>Times Tables Test</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+    <style type="text/css">
+		TD,input {text-align: center; font-size: 16pt; font-family: sans-serif}
+        TD.Symbol { font-size: 18pt; }
+        TD.Result { border: 2px solid black; width: 9%; border-width: thin}
+        TD.Label { text-align: right; font-size: 12pt; }
+        TD.Total { text-align: left; font-size: 12pt; }
+        input.Entry { border: none; display: inline-block; width:100%}
+        TD.Result.Correct input.Entry { color: green}
+        TD.Result.Wrong input.Entry { color: red}
+        span.Answer { display: none}
+        .revealed TD.Result input.Entry { width: 50%}
+        .revealed TD.Result.Wrong input.Entry { text-decoration: line-through}
+        .revealed TD.Result span.Answer { display: inline-block;width: 50%}
+        .revealed TD.Result.Correct span.Answer { width:0%; visibility:hidden}
+        .revealed TD.Result.Correct span.Answer:before { content: "\2714"; visibility:visible}
+    </style>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-LVKS4QC9G6"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-LVKS4QC9G6');
+</script>
+</head>
+<body onLoad="FormLoad()">
+    <table id="Main" class="Main" width=100% height=100%>
+        <script type="text/javascript">
+            var timerID = 0;
+            var tStart  = null;
+            
+            var NumSums = (location.search.substr(location.search.indexOf("num")+4)).split("&")[0];
+            
+            var AllTables = new Array();
+            
+            var Times = "&#215;";
+            var Divide = "&#247;";
+			var Plus = "+";
+			var Minus = "-";
+            
+            var Bounds = build_table();
+            if (Bounds > 0)
+            {
+                var Index = 0;
+                var SumNum = 1;
+                
+                for (var Row=1;Row<=20;Row++)
+                {
+                    document.write("<tr>");
+        
+                    for(var Column=1;Column<=4;Column++)
+                    {
+                        var sum = AllTables[Index];
+                        var MyId = (Row * 4) + Column;
+                        
+                        if (Column > 1)
+                            document.write("<td>&nbsp;</td>");
+        
+                        if (SumNum <= NumSums)
+                        {
+                            document.write("<td class=\"Num1\">");
+                            document.write( sum.left);
+                            document.write("</td><td class=\"Symbol\">");
+                            document.write( sum.operator);
+                            document.write("</td><td class=\"Num2\">");
+                            document.write( sum.right >= 0 ? sum.right : "(" + sum.right + ")");
+                            document.write("</td><td class=\"Symbol\">=</td><td class=\"Result\">");
+                            document.write("<input id=\"" + MyId + "\" type=\"text\" class=\"Entry\" onchange=\"Validate(" + MyId + "," + sum.answer + ")\"/><span class=\"Answer\">" + sum.answer + "</span></td>");
+                        }
+                        else
+                            document.write("<td colspan=5 /");
+        
+                        Index ++;
+                        SumNum ++;
+                        
+                        if (Index >= Bounds)
+                        {
+                            Bounds = build_table();
+                            Index = 0;
+                        }
+                    }
+                    document.write("</tr>");
+                    if (Row != 20)
+                    {
+                        document.write("<tr height=\"1%\"><td colspan=\"23\"></tr>");
+                    }
+                }
+                if (location.search.indexOf("print=on") < 0)
+                {
+                    document.write("<tr>");
+                    document.write("<td colspan=6 class=\"Total\" id=\"Total\">0 out of " + NumSums + "</td>");
+                    document.write("<td colspan=12 />");
+                    document.write("<td class=\"Label\" colspan=4>Time taken:</td>");
+                    document.write("<td><input id=\"timer\" type=text readonly size=5 /></td>");
+                    document.write("</tr>");
+                }
+				
+				var results = document.getElementsByClassName("Entry");
+				document.onkeydown = function(event) {
+					if (event.key.toLowerCase() === "r") {
+						Finished()
+						event.preventDefault();
+					}
+					if (event.keyCode === 13) {
+						event.preventDefault();
+						var nextElement = document.getElementById(1 + event.target.id);
+						nextElement = document.getElementById(1 + parseInt(event.target.id));
+						if (nextElement) {
+							nextElement.focus();
+						}
+					}
+				};
+            }
+            else
+                document.write("Nothing to do!");
+
+			function addSum( left, operator, right, answer) {
+				AllTables.push({
+					sortKey: Math.random(),
+					left: left,
+					operator: operator,
+					right: right,
+					answer: answer
+				});
+			}
+			
+            function build_table()
+            {
+				AllTables = new Array()
+				
+                var includeSpecified = (location.search.indexOf("Include") > 0);
+                var restrictBothSides = (location.search.indexOf("Both") > 0);
+                var includeNegative = (location.search.indexOf("Negative") > 0);
+                var multiplication = (location.search.indexOf("Multiplication") > 0);
+                var division = (location.search.indexOf("Division") > 0);
+                var addition = (location.search.indexOf("Addition") > 0);
+                var subtraction = (location.search.indexOf("Subtraction") > 0);
+                
+                var Index = 0;
+                var start = includeNegative ? -12 : 1;
+                for (var table=start;table<=12;table++)
+                {
+                    if (!(includeNegative && table == 0)) {
+                        var match = location.search.indexOf("t" + Math.abs(table) + "=on") > 0
+                        if ((includeSpecified && !match) || (!includeSpecified && match))
+                            continue;
+                    }
+                    for (var multiple=start;multiple<=12;multiple++)
+                    {
+                        if (restrictBothSides)
+                        {
+                            if (!(includeNegative && multiple == 0)) {
+                                var match = location.search.indexOf("t" + Math.abs(multiple) + "=on") > 0
+                                if ((includeSpecified && !match) || (!includeSpecified && match))
+                                    continue;
+                            }
+                         }
+                        
+                        if (multiplication) addSum(multiple, Times, table, table * multiple);
+                        if (division && table != 0) addSum(table * multiple, Divide, table, multiple);
+                        if (addition) addSum(multiple, Plus, table, table + multiple);
+                        if (subtraction && (includeNegative || (multiple > table))) addSum(multiple, Minus, table, multiple - table);
+                    }
+                }
+            
+                AllTables.sort(function(a,b) {return a.sortKey - b.sortKey;});
+				
+				return AllTables.length;
+            }
+			function Finished() {
+				Stop()
+				document.body.classList.add("Revealed")
+				for (var i = 0; i < results.length; i++) {
+					results[i].disabled = true;
+				}
+                document.getElementById("timer").focus();
+			}
+			
+            function Validate( CellId, CellValue)
+            {
+                var Cell = document.getElementById(CellId);
+				var parent = Cell.parentElement;
+                if (Cell.value == CellValue)
+                {
+					parent.classList.remove("Wrong");
+					parent.classList.add("Correct");
+                }
+                else
+                {
+					parent.classList.remove("Correct");
+					if (Cell.value) parent.classList.add("Wrong")
+                }
+                
+                var correct = 0;
+                for(var Id=1;Id<=NumSums;Id++)
+                {
+                    if(document.getElementById(Id+4).parentElement.classList.contains("Correct"))
+                    {
+						correct++;
+                    }
+                }
+                
+				document.getElementById("Total").innerText = correct + " out of " + NumSums;
+                if (correct == NumSums)
+                {
+					Finished();
+                    document.getElementById("timer").style["color"]="green";
+                }
+            }
+
+            function FormLoad()
+            {
+                if (location.search.indexOf("print=on") > 0)
+                {
+                    window.print();
+                }
+                else
+                    Start();
+            }
+            
+            function UpdateTimer()
+            {
+               if(timerID)
+               {
+                  clearTimeout(timerID);
+                  clockID  = 0;
+               }
+
+               if(!tStart)
+                  tStart   = new Date();
+
+               var   tDate = new Date();
+               var   tDiff = tDate.getTime() - tStart.getTime();
+               
+               tDate.setTime(tDiff);
+
+               var myMinutes = tDate.getMinutes();
+               var mySeconds = tDate.getSeconds();
+               
+               document.getElementById("timer").value = "" 
+                    + "00".substr(0,2-String(myMinutes).length) + myMinutes + ":" 
+                    + "00".substr(0,2-String(mySeconds).length) + mySeconds;
+               
+               timerID = setTimeout("UpdateTimer()", 1000);
+            }
+
+            function Start() {
+               tStart   = new Date();
+
+               document.getElementById("timer").value = "00:00";
+
+               timerID  = setTimeout("UpdateTimer()", 1000);
+            }
+
+            function Stop() {
+               if(timerID) {
+                  clearTimeout(timerID);
+                  timerID  = 0;
+               }
+
+               tStart = null;
+            }
+
+            function Reset() {
+               tStart = null;
+
+               document.getElementById("timer").value = "00:00";
+            }
+
+
+        </script>
+    </table>
+</body>
+</html>
+<!--

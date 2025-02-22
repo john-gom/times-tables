@@ -1,0 +1,217 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html>
+<head>
+    <title>Times Table Generator</title>
+    <!--
+   HTML 3.2
+   Document type as defined on http://www.w3.org/TR/REC-html32
+-->
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+    <style type="text/css">
+  	  	div.Normal {font-family: sans-serif}
+  	  	td {text-align: right}
+  	  	td.norm {text-align: left}
+  	</style>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-LVKS4QC9G6"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-LVKS4QC9G6');
+</script>
+<script type="text/javascript">
+  window.addEventListener("load", function() {
+    var inputs = ["scope","t1","t2","t3","t4","t5","t6","t7","t8","t9","t10","t11","t12","num","type","print","side"];
+    if (localStorage) {
+        if (localStorage.tables) {
+            var data = JSON.parse(localStorage.tables)
+            for (var i in inputs) {
+                var input = inputs[i];
+                var stored = data[input];
+                if (stored) {
+                    var elems = document.getElementsByName(input);
+                    if (elems.length > 0) {
+                        if (elems[0].type === "checkbox") {
+                            if (stored) {
+                                elems[0].setAttribute("checked","checked");
+                            }
+                        } else {
+                            elems[0].value = stored;
+                        }
+                    }
+                }
+            }
+        }
+        var submit = document.getElementById("submit");
+        submit.addEventListener("click", function() {
+            var data = {};
+            for (var i in inputs) {
+                var input = inputs[i];
+                var elems = document.getElementsByName(input);
+                if (elems.length > 0) {
+                    if (elems[0].type === "checkbox") {
+                        data[input] = elems[0].checked;
+                    } else {
+                        data[input] = elems[0].value;
+                    }
+                }
+            }
+            localStorage.tables = JSON.stringify(data);
+        },false);
+    }
+  },false);
+</script>
+</head>
+<body>
+    <div class="Normal">
+        <form action="tables.html" method="get">
+            Select which tables you would like to include or exclude below, then click on the
+            "OK" button to display and print the results.
+            <br />
+            <br />
+            Tables to&nbsp;<select name="scope">
+                :
+                <option value="Exclude" selected="selected">Exclude</option>
+                <option value="Include" >Include</option>
+            </select>
+            &nbsp;which side?&nbsp;<select name="side">
+                :
+                <option value="Right" selected="selected">All on left, restrict right</option>
+                <option value="Both" >Restrict both sides</option>
+            </select>
+            <br />
+            <br />
+            <table>
+                <tbody>
+                    <tr>
+                        <td>
+                            1</td>
+                        <td>
+                            <input type="checkbox" name="t1" /></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            2</td>
+                        <td>
+                            <input type="checkbox" name="t2" /></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            3</td>
+                        <td>
+                            <input type="checkbox" name="t3" /></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            4</td>
+                        <td>
+                            <input type="checkbox" name="t4" /></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            5</td>
+                        <td>
+                            <input type="checkbox" name="t5" /></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            6</td>
+                        <td>
+                            <input type="checkbox" name="t6" /></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            7</td>
+                        <td>
+                            <input type="checkbox" name="t7" /></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            8</td>
+                        <td>
+                            <input type="checkbox" name="t8" /></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            9</td>
+                        <td>
+                            <input type="checkbox" name="t9" /></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            10</td>
+                        <td>
+                            <input type="checkbox" name="t10" /></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            11</td>
+                        <td>
+                            <input type="checkbox" name="t11" /></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            12</td>
+                        <td>
+                            <input type="checkbox" name="t12" /></td>
+                    </tr>
+                </tbody>
+            </table>
+            <br />
+            <table>
+                <tr>
+                    <td class="norm"><label for="negative">Include negative and zero</label></td>
+                    <td class="norm"><input type="checkbox" name="Negative" id="negative"/></td>
+                </tr>
+                <tr>
+                    <td class="norm">How many sums:</td>
+                    <td class="norm">
+                        <select name="num">
+                            <option value="28">28</option>
+                            <option value="45">45</option>
+                            <option value="80" selected>80</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="norm">What type of sum:</td>
+                    <td class="norm"><label>Multiplication<input type="checkbox" name="Multiplication" checked/></label></td>
+                </tr>
+				<tr><td/><td class="norm"><label>Division<input type="checkbox" name="Division"/></label></td></tr>
+				<tr><td/><td class="norm"><label>Addition<input type="checkbox" name="Addition"/></label></td></tr>
+				<tr><td/><td class="norm"><label>Subtraction<input type="checkbox" name="Subtraction"/></label></td></tr>
+                <tr>
+                    <td class="norm">What would you like to do:</td>
+                    <td class="norm">
+                        <select name="print">
+                            <option selected value="on">Print form</option>
+                            <option value="off">Complete on-line</option>
+                        </select>
+						<span>(Tip: Press "R" to stop the clock and reveal the answers)</span>
+                    </td>
+                </tr>
+                <tr><td /><td class="norm"><input type="submit" id="submit" value="Go..." /></td></tr>
+            </table>
+            <br />
+        </form>
+    </div>
+    <div class="Normal">
+        <form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+            <p align="right">
+                If you find this site useful and would like to make a contribution to the author then please feel free to use the donate button below.  If you have any suggestions you would like to make about the site, or any other ideas you think might be useful then please drop me a line at the email address given on the donate page.
+                <br />
+                Many thanks.
+                <br />
+                <input type="hidden" name="cmd" value="_s-xclick">
+                <input type="hidden" name="encrypted" value="-----BEGIN PKCS7-----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-----END PKCS7-----
+                ">
+                <input type="image" src="https://www.paypal.com/en_US/GB/i/btn/btn_donateCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online.">
+                <img alt="" border="0" src="https://www.paypal.com/en_GB/i/scr/pixel.gif" width="1" height="1">
+            </p>
+        </form>
+    </div>
+</body>
+</html>
+<!--
