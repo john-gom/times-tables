@@ -32,6 +32,10 @@
 <body onLoad="FormLoad()">
     <table id="Main" class="Main" width=100% height=100%>
         <script type="text/javascript">
+            // Save selection in localStorage for next time
+            const params = new URLSearchParams(location.search);
+            localStorage.tables = JSON.stringify(Object.fromEntries(params.entries().map(e => [e[0], e[1] == 'on' && e[0] != 'print' ? true : e[1]])))
+
             var timerID = 0;
             var tStart  = null;
             

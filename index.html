@@ -23,43 +23,20 @@
 </script>
 <script type="text/javascript">
   window.addEventListener("load", function() {
-    var inputs = ["scope","t1","t2","t3","t4","t5","t6","t7","t8","t9","t10","t11","t12","num","type","print","side"];
-    if (localStorage) {
-        if (localStorage.tables) {
-            var data = JSON.parse(localStorage.tables)
-            for (var i in inputs) {
-                var input = inputs[i];
-                var stored = data[input];
-                if (stored) {
-                    var elems = document.getElementsByName(input);
-                    if (elems.length > 0) {
-                        if (elems[0].type === "checkbox") {
-                            if (stored) {
-                                elems[0].setAttribute("checked","checked");
-                            }
-                        } else {
-                            elems[0].value = stored;
-                        }
+    if (localStorage?.tables) {
+        var data = JSON.parse(localStorage.tables)
+        for ([input, stored] of Object.entries(data)) {
+            var elems = document.getElementsByName(input);
+            if (elems.length > 0) {
+                if (elems[0].type === "checkbox") {
+                    if (stored) {
+                        elems[0].setAttribute("checked","checked");
                     }
+                } else {
+                    elems[0].value = stored;
                 }
             }
         }
-        var submit = document.getElementById("submit");
-        submit.addEventListener("click", function() {
-            var data = {};
-            for (var i in inputs) {
-                var input = inputs[i];
-                var elems = document.getElementsByName(input);
-                if (elems.length > 0) {
-                    if (elems[0].type === "checkbox") {
-                        data[input] = elems[0].checked;
-                    } else {
-                        data[input] = elems[0].value;
-                    }
-                }
-            }
-            localStorage.tables = JSON.stringify(data);
-        },false);
     }
   },false);
 </script>
