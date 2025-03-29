@@ -36,6 +36,11 @@
             const params = new URLSearchParams(location.search);
             localStorage.tables = JSON.stringify(Object.fromEntries(params.entries().map(e => [e[0], e[1] == 'on' && e[0] != 'print' ? true : e[1]])))
 
+            // Add warning if they are still using the old URL
+            if (document.referrer == "http://johngom.com/") {
+                document.write("<p style='font-family:sans-serif'>PLEASE NOTE: This site is being moved to <a href='https://john-gom.github.io/times-tables'>https://john-gom.github.io/times-tables</a>. Please update any bookmarks or favourites you use to access the tool before the current link is removed.</p>")
+            }
+
             var timerID = 0;
             var tStart  = null;
             
