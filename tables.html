@@ -34,7 +34,16 @@
         <script type="text/javascript">
             // Save selection in localStorage for next time
             const params = new URLSearchParams(location.search);
-            localStorage.tables = JSON.stringify(Object.fromEntries(params.entries().map(e => [e[0], e[1] == 'on' && e[0] != 'print' ? true : e[1]])))
+
+            // Was using map here but older versions of Safari don't support that for iterators
+            const tables = {};
+            for (const param of params.entries()) {
+                const key = param[0];
+                const value = param[1];
+                if (value == 'on' && key != 'print') tables[key] = true
+                else tables[key] = value;
+            }
+            localStorage.tables = JSON.stringify(tables);
 
             // Add warning if they are still using the old URL
             if (document.referrer == "http://johngom.com/") {
