@@ -48,17 +48,10 @@
             "OK" button to display and print the results.
             <br />
             <br />
-            Tables to&nbsp;<select name="scope">
-                :
+            Tables to:&nbsp;<select name="scope">
                 <option value="Exclude" selected="selected">Exclude</option>
                 <option value="Include" >Include</option>
-            </select>
-            &nbsp;which side?&nbsp;<select name="side">
-                :
-                <option value="Right" selected="selected">All on left, restrict right</option>
-                <option value="Both" >Restrict both sides</option>
-            </select>
-            <br />
+            </select>:
             <br />
             <table>
                 <tbody>
@@ -139,6 +132,22 @@
             <br />
             <table>
                 <tr>
+                    <td class="norm"><label for="side">Show only selected tables for multiplication / addition:</label></td>
+                    <td class="norm"><select name="side" id="side">
+                        <option value="Right" selected="selected">On right side</option>
+                        <option value="Left" selected="selected">On left side</option>
+                        <option value="Both" >On both sides</option>
+                    </select></td>
+                </tr>
+                <tr>
+                    <td class="norm"><label for="side-div-sub">Show only selected tables for division / subtraction:</label></td>
+                    <td class="norm"><select name="side-div-sub" id="side-div-sub">
+                        <option value="Right" selected="selected">On subtrahend / denominator</option>
+                        <option value="Answer" >On answer</option>
+                        <option value="Both" >On both</option>
+                    </select></td>
+                </tr>
+                <tr>
                     <td class="norm"><label for="negative">Include negative and zero</label></td>
                     <td class="norm"><input type="checkbox" name="Negative" id="negative"/></td>
                 </tr>
@@ -156,9 +165,9 @@
                     <td class="norm">What type of sum:</td>
                     <td class="norm"><label>Multiplication<input type="checkbox" name="Multiplication" checked/></label></td>
                 </tr>
-				<tr><td/><td class="norm"><label>Division<input type="checkbox" name="Division"/></label></td></tr>
-				<tr><td/><td class="norm"><label>Addition<input type="checkbox" name="Addition"/></label></td></tr>
-				<tr><td/><td class="norm"><label>Subtraction<input type="checkbox" name="Subtraction"/></label></td></tr>
+				<tr><td></td><td class="norm"><label>Division<input type="checkbox" name="Division"/></label></td></tr>
+				<tr><td></td><td class="norm"><label>Addition<input type="checkbox" name="Addition"/></label></td></tr>
+				<tr><td></td><td class="norm"><label>Subtraction<input type="checkbox" name="Subtraction"/></label></td></tr>
                 <tr>
                     <td class="norm">What would you like to do:</td>
                     <td class="norm">
@@ -169,7 +178,7 @@
 						<span>(Tip: Press "R" to stop the clock and reveal the answers)</span>
                     </td>
                 </tr>
-                <tr><td /><td class="norm"><input type="submit" id="submit" value="Go..." /></td></tr>
+                <tr><td></td><td class="norm"><input type="submit" id="submit" value="Go..." /></td></tr>
             </table>
             <br />
         </form>

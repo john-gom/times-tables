@@ -153,7 +153,8 @@
 				AllTables = new Array()
 				
                 var includeSpecified = params.get("scope") === "Include";
-                var restrictBothSides = params.get("side") === "Both";
+                var multiplyAddSide = params.get("side");
+                var divideSubtractSide = params.get("side-div-sub");
                 var includeNegative = params.get("Negative") === "on";
                 var multiplication = params.get("Multiplication") === "on";
                 var division = params.get("Division") === "on";
@@ -164,26 +165,25 @@
                 var start = includeNegative ? -12 : 1;
                 for (var table=start;table<=12;table++)
                 {
-                    if (!(includeNegative && table == 0)) {
-                        var match = params.get("t" + Math.abs(table)) === "on";
-                        if ((includeSpecified && !match) || (!includeSpecified && match))
-                            continue;
-                    }
+                    var match = params.get("t" + Math.abs(table)) === "on";
+                    var tableMatch = table == 0 || (includeSpecified && match) || (!includeSpecified && !match)
                     for (var multiple=start;multiple<=12;multiple++)
                     {
-                        if (restrictBothSides)
-                        {
-                            if (!(includeNegative && multiple == 0)) {
-                                var match = params.get("t" + Math.abs(multiple)) === "on";
-                                if ((includeSpecified && !match) || (!includeSpecified && match))
-                                    continue;
-                            }
-                         }
-                        
-                        if (multiplication) addSum(multiple, Times, table, table * multiple);
-                        if (division && table != 0) addSum(table * multiple, Divide, table, multiple);
-                        if (addition) addSum(multiple, Plus, table, table + multiple);
-                        if (subtraction && (includeNegative || (multiple > table))) addSum(multiple, Minus, table, multiple - table);
+                        var match2 = params.get("t" + Math.abs(multiple)) === "on";
+                        var multipleMatch = multiple == 0 || (includeSpecified && match2) || (!includeSpecified && !match2)
+
+                        if ((multiplyAddSide === "Right" && tableMatch)
+                                || (multiplyAddSide === "Left" && multipleMatch) 
+                                || (multiplyAddSide === "Both" && tableMatch && multipleMatch)) {
+                            if (multiplication) addSum(multiple, Times, table, table * multiple);
+                            if (addition) addSum(multiple, Plus, table, table + multiple);
+                        }
+                        if ((divideSubtractSide === "Right" && tableMatch) 
+                                || (divideSubtractSide === "Answer" && multipleMatch)
+                                || (divideSubtractSide === "Both" && tableMatch && multipleMatch)) {
+                            if (division && table != 0) addSum(table * multiple, Divide, table, multiple);
+                            if (subtraction && (includeNegative || (multiple > table))) addSum(multiple, Minus, table, multiple - table);
+                        }
                     }
                 }
             
