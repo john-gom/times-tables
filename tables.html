@@ -53,7 +53,7 @@
             var timerID = 0;
             var tStart  = null;
             
-            var NumSums = (location.search.substr(location.search.indexOf("num")+4)).split("&")[0];
+            var NumSums = params.get("num");
             
             var AllTables = new Array();
             
@@ -109,7 +109,7 @@
                         document.write("<tr height=\"1%\"><td colspan=\"23\"></tr>");
                     }
                 }
-                if (location.search.indexOf("print=on") < 0)
+                if (params.get("print") !== "on")
                 {
                     document.write("<tr>");
                     document.write("<td colspan=6 class=\"Total\" id=\"Total\">0 out of " + NumSums + "</td>");
@@ -152,20 +152,20 @@
             {
 				AllTables = new Array()
 				
-                var includeSpecified = (location.search.indexOf("Include") > 0);
-                var restrictBothSides = (location.search.indexOf("Both") > 0);
-                var includeNegative = (location.search.indexOf("Negative") > 0);
-                var multiplication = (location.search.indexOf("Multiplication") > 0);
-                var division = (location.search.indexOf("Division") > 0);
-                var addition = (location.search.indexOf("Addition") > 0);
-                var subtraction = (location.search.indexOf("Subtraction") > 0);
+                var includeSpecified = params.get("scope") === "Include";
+                var restrictBothSides = params.get("side") === "Both";
+                var includeNegative = params.get("Negative") === "on";
+                var multiplication = params.get("Multiplication") === "on";
+                var division = params.get("Division") === "on";
+                var addition = params.get("Addition") === "on";
+                var subtraction = params.get("Subtraction") === "on";
                 
                 var Index = 0;
                 var start = includeNegative ? -12 : 1;
                 for (var table=start;table<=12;table++)
                 {
                     if (!(includeNegative && table == 0)) {
-                        var match = location.search.indexOf("t" + Math.abs(table) + "=on") > 0
+                        var match = params.get("t" + Math.abs(table)) === "on";
                         if ((includeSpecified && !match) || (!includeSpecified && match))
                             continue;
                     }
@@ -174,7 +174,7 @@
                         if (restrictBothSides)
                         {
                             if (!(includeNegative && multiple == 0)) {
-                                var match = location.search.indexOf("t" + Math.abs(multiple) + "=on") > 0
+                                var match = params.get("t" + Math.abs(multiple)) === "on";
                                 if ((includeSpecified && !match) || (!includeSpecified && match))
                                     continue;
                             }
@@ -234,7 +234,7 @@
 
             function FormLoad()
             {
-                if (location.search.indexOf("print=on") > 0)
+                if (params.get("print") === "on")
                 {
                     window.print();
                 }
