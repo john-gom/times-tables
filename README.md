@@ -7,3 +7,10 @@ The code isn't perfect but it is nice and simple with no requirement for a backe
 It is deployed in GitHub pages [here](https://john-gom.github.io/times-tables/).
 
 If you would like to make a contribution then please feel free to log an issue or create a PR.
+
+To run locally, clone the repository and run:
+
+```
+npx http-server
+```
+from the repository root directory. You can then browse to http://127.0.0.1:8080
